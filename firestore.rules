@@ -1,0 +1,104 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net - default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Primitives
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Users collection rules (PII isolation and owner validation)
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+
+      // User Profile info
+      match /profile/info {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && incoming().uid == request.auth.uid;
+        allow update: if isOwner(userId) && incoming().uid == request.auth.uid;
+        allow delete: if isOwner(userId);
+      }
+
+      // Price Drop Alert Subscriptions
+      match /priceDropAlerts/{alertId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) 
+          && isValidId(alertId)
+          && incoming().userId == request.auth.uid
+          && incoming().listingId is string
+          && incoming().targetPriceBdt is number
+          && incoming().targetPriceBdt > 0
+          && incoming().status in ['active', 'triggered', 'cancelled'];
+        allow update: if isOwner(userId)
+          && isValidId(alertId)
+          && incoming().userId == request.auth.uid
+          && incoming().diff(existing()).affectedKeys().hasOnly(['targetPriceBdt', 'currentPriceBdt', 'status', 'notifyEmail', 'phone']);
+        allow delete: if isOwner(userId) && isValidId(alertId);
+      }
+
+      // Booking Records
+      match /bookings/{bookingId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && isValidId(bookingId)
+          && incoming().userId == request.auth.uid
+          && incoming().listingId is string
+          && incoming().totalBdt is number
+          && incoming().totalBdt > 0
+          && incoming().status in ['confirmed', 'pending', 'cancelled'];
+        allow update: if isOwner(userId)
+          && isValidId(bookingId)
+          && incoming().userId == request.auth.uid
+          && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'guestsCount']);
+        allow delete: if isOwner(userId) && isValidId(alertId);
+      }
+    }
+
+    // Public Verified Reviews for Listings
+    match /listings/{listingId}/reviews/{reviewId} {
+      allow read: if isValidId(listingId);
+      allow create: if isSignedIn()
+        && isValidId(listingId)
+        && isValidId(reviewId)
+        && incoming().userId == request.auth.uid
+        && incoming().listingId == listingId
+        && incoming().rating is number
+        && incoming().rating >= 1
+        && incoming().rating <= 5
+        && incoming().content is string
+        && incoming().content.size() <= 2000;
+      allow update: if isSignedIn()
+        && isValidId(listingId)
+        && isValidId(reviewId)
+        && existing().userId == request.auth.uid
+        && incoming().userId == request.auth.uid
+        && incoming().diff(existing()).affectedKeys().hasOnly(['rating', 'title', 'content']);
+      allow delete: if isSignedIn()
+        && isValidId(listingId)
+        && isValidId(reviewId)
+        && existing().userId == request.auth.uid;
+    }
+  }
+}

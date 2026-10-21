@@ -1,0 +1,96 @@
+{
+  "entities": {
+    "PriceDropAlert": {
+      "title": "PriceDropAlert",
+      "description": "User subscription for hotel and trip price drop notifications in Bangladesh.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the price alert subscription." },
+        "userId": { "type": "string", "description": "Firebase Auth UID of the subscribed user." },
+        "listingId": { "type": "string", "description": "Target listing ID being monitored." },
+        "listingTitle": { "type": "string", "description": "Name or title of the hotel/listing." },
+        "targetPriceBdt": { "type": "number", "description": "Target trigger price in Bangladeshi Taka." },
+        "initialPriceBdt": { "type": "number", "description": "Initial price when subscription was created." },
+        "currentPriceBdt": { "type": "number", "description": "Latest known price in BDT." },
+        "notifyEmail": { "type": "string", "description": "Email address for price drop alerts." },
+        "phone": { "type": "string", "description": "bKash / SMS mobile contact number." },
+        "status": { "type": "string", "enum": ["active", "triggered", "cancelled"], "description": "Current status of the alert." },
+        "createdAt": { "type": "string", "description": "ISO timestamp when the alert was created." }
+      },
+      "required": ["userId", "listingId", "targetPriceBdt", "status", "createdAt"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Traveler reservation record for hotels and transport in Bangladesh.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique booking reference ID." },
+        "userId": { "type": "string", "description": "Firebase Auth UID of the traveler." },
+        "listingId": { "type": "string", "description": "Listing ID reserved." },
+        "listingTitle": { "type": "string", "description": "Hotel or service name." },
+        "guestName": { "type": "string", "description": "Primary guest full name." },
+        "guestPhone": { "type": "string", "description": "Contact phone number for confirmation." },
+        "paymentMethod": { "type": "string", "description": "Payment method used (bKash, Nagad, Card, etc.)." },
+        "totalBdt": { "type": "number", "description": "Total payment amount in BDT." },
+        "checkInDate": { "type": "string", "description": "Check-in or travel date." },
+        "checkOutDate": { "type": "string", "description": "Check-out date if applicable." },
+        "guestsCount": { "type": "number", "description": "Number of guests." },
+        "status": { "type": "string", "enum": ["confirmed", "pending", "cancelled"], "description": "Booking status." },
+        "createdAt": { "type": "string", "description": "ISO creation timestamp." }
+      },
+      "required": ["userId", "listingId", "guestName", "guestPhone", "totalBdt", "status", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Traveler profile data and local preferences.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID." },
+        "displayName": { "type": "string", "description": "User display name." },
+        "email": { "type": "string", "description": "User email address." },
+        "phone": { "type": "string", "description": "Bangladeshi phone number." },
+        "division": { "type": "string", "description": "Home division in Bangladesh." },
+        "loyaltyPoints": { "type": "number", "description": "Reward points earned on bookings." },
+        "createdAt": { "type": "string", "description": "Account registration timestamp." },
+        "updatedAt": { "type": "string", "description": "Last profile update timestamp." }
+      },
+      "required": ["uid", "displayName", "createdAt"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Verified traveler review and rating for hotels and stays.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique review ID." },
+        "listingId": { "type": "string", "description": "Listing ID reviewed." },
+        "userId": { "type": "string", "description": "Firebase Auth UID of reviewer." },
+        "authorName": { "type": "string", "description": "Display name of the author." },
+        "rating": { "type": "number", "description": "Rating score out of 5." },
+        "title": { "type": "string", "description": "Headline of the review." },
+        "content": { "type": "string", "description": "Review text content." },
+        "date": { "type": "string", "description": "Date of stay or review." },
+        "verifiedStay": { "type": "boolean", "description": "Whether the booking was verified." },
+        "createdAt": { "type": "string", "description": "ISO timestamp." }
+      },
+      "required": ["listingId", "userId", "authorName", "rating", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/priceDropAlerts/{alertId}": {
+      "schema": "PriceDropAlert",
+      "description": "User subscriptions for hotel and trip price drop notifications."
+    },
+    "/users/{userId}/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "User reservations and booking records with payment tracking."
+    },
+    "/users/{userId}/profile/info": {
+      "schema": "UserProfile",
+      "description": "Private profile information and local preferences for the authenticated traveler."
+    },
+    "/listings/{listingId}/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Public verified traveler reviews for Bangladesh hotels, eco-resorts, and tours."
+    }
+  }
+}

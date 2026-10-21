@@ -1,0 +1,34 @@
+[
+    {
+        "hotel_name": "Hotel AS Shams International",
+        "location": "Fakirapool, Dhaka",
+        "price_bdt": 1357,
+        "amenities": [
+            "Free Wi-Fi",
+            "Airport Shuttle"
+        ],
+        "rating": "3.8/5"
+    },
+    {
+        "hotel_name": "Hotel Pacific",
+        "location": "Motijheel, Dhaka",
+        "price_bdt": 1569,
+        "amenities": [
+            "Fitness Center",
+            "Restaurant",
+            "Free Wi-Fi"
+        ],
+        "rating": "4.0/5"
+    },
+    {
+        "hotel_name": "Hotel Seven Star (Residential)",
+        "location": "Old Dhaka, Dhaka",
+        "price_bdt": 3126,
+        "amenities": [
+            "Free Breakfast",
+            "Restaurant",
+            "BBQ Facilities"
+        ],
+        "rating": "4.2/5"
+    }
+]
