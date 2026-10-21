@@ -30,5 +30,89 @@
             "BBQ Facilities"
         ],
         "rating": "4.2/5"
+    },
+    {
+        "hotel_name": "BPC Hotel Abakash (Bangladesh Parjatan Corp)",
+        "location": "Mohakhali, Dhaka",
+        "price_bdt": 4500,
+        "amenities": [
+            "Official Govt Tourism Hotel",
+            "Complimentary Breakfast",
+            "Halal Dining",
+            "Airport / Station Transfer"
+        ],
+        "rating": "4.5/5"
+    },
+    {
+        "hotel_name": "Hotel Ornate International",
+        "location": "Bijoynagar, Dhaka",
+        "price_bdt": 3850,
+        "amenities": [
+            "Complimentary Breakfast",
+            "Fast Wi-Fi",
+            "Halal Dining",
+            "AC Suite / Cabin"
+        ],
+        "rating": "4.3/5"
+    },
+    {
+        "hotel_name": "Hotel 71 Dhaka",
+        "location": "Kakrail, Dhaka",
+        "price_bdt": 5400,
+        "amenities": [
+            "Complimentary Breakfast",
+            "Airport / Station Transfer",
+            "Halal Dining",
+            "Fast Wi-Fi"
+        ],
+        "rating": "4.6/5"
+    },
+    {
+        "hotel_name": "FARS Hotel & Resorts Dhaka",
+        "location": "Purana Paltan, Dhaka",
+        "price_bdt": 7800,
+        "amenities": [
+            "Swimming Pool",
+            "Complimentary Breakfast",
+            "Halal Dining",
+            "Fast Wi-Fi"
+        ],
+        "rating": "4.7/5"
+    },
+    {
+        "hotel_name": "Platinum Grand Hotel Banani",
+        "location": "Banani Road 11, Dhaka",
+        "price_bdt": 8640,
+        "amenities": [
+            "Swimming Pool",
+            "Complimentary Breakfast",
+            "Airport / Station Transfer",
+            "Halal Dining"
+        ],
+        "rating": "4.7/5"
+    },
+    {
+        "hotel_name": "Hansa — A Premium Residence",
+        "location": "Uttara Sector 11, Dhaka",
+        "price_bdt": 9200,
+        "amenities": [
+            "Swimming Pool",
+            "Complimentary Breakfast",
+            "Airport / Station Transfer",
+            "Fast Wi-Fi"
+        ],
+        "rating": "4.8/5"
+    },
+    {
+        "hotel_name": "Golden Tulip The Grandmark Dhaka",
+        "location": "Banani, Dhaka",
+        "price_bdt": 10800,
+        "amenities": [
+            "Swimming Pool",
+            "Complimentary Breakfast",
+            "Halal Dining",
+            "Airport / Station Transfer"
+        ],
+        "rating": "4.8/5"
     }
 ]

@@ -23,9 +23,9 @@ test('bdtToExactUsd round-trips to exact BDT price with convertCurrency', () => 
   }
 });
 
-test('mapScrapedDhakaHotelsToListings converts all 3 scraped Dhaka hotels into valid Listings', () => {
+test('mapScrapedDhakaHotelsToListings converts all 10 scraped Dhaka & BPC hotels into valid Listings', () => {
   const listings = mapScrapedDhakaHotelsToListings();
-  assert.equal(listings.length, 3);
+  assert.equal(listings.length, 10);
   assert.equal(listings[0].title, 'Hotel AS Shams International');
   assert.equal(listings[0].destination, 'Fakirapool, Dhaka');
   assert.equal(listings[0].division, 'Dhaka');
@@ -33,6 +33,8 @@ test('mapScrapedDhakaHotelsToListings converts all 3 scraped Dhaka hotels into v
   assert.equal(listings[1].destination, 'Motijheel, Dhaka');
   assert.equal(listings[2].title, 'Hotel Seven Star (Residential)');
   assert.equal(listings[2].destination, 'Old Dhaka, Dhaka');
+  assert.equal(listings[3].title, 'BPC Hotel Abakash (Bangladesh Parjatan Corp)');
+  assert.equal(listings[3].propertyType, 'BPC Parjatan Govt Hotel');
 });
 
 test('formatScraperConsoleOutput produces exact Python table output', () => {

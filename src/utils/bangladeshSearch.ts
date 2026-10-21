@@ -55,6 +55,7 @@ export const BANGLADESH_DIVISIONS = [
   'Barishal',
   'Rajshahi',
   'Rangpur',
+  'Mymensingh',
 ];
 
 export const BANGLADESH_DESTINATIONS = [
@@ -64,10 +65,14 @@ export const BANGLADESH_DESTINATIONS = [
   'Bandarban',
   'Sajek Valley / Rangamati',
   'Dhaka',
+  'Gazipur / Bhawal',
   "Saint Martin's Island",
   'Sundarbans / Khulna',
   'Chattogram',
   'Kuakata',
+  'Rajshahi / Bogura',
+  'Rangpur / Dinajpur',
+  'Mymensingh',
 ];
 
 export const BANGLADESH_ORIGIN_HUBS = [
@@ -77,10 +82,12 @@ export const BANGLADESH_ORIGIN_HUBS = [
   "Cox's Bazar (CXB / Iconic Station)",
   'Sylhet (ZYL / Sylhet Station)',
   'Khulna (Mongla / Rupsha)',
+  'Rajshahi / Bogura / Rangpur',
 ];
 
 export const HOTEL_PROPERTY_TYPES = [
   'all',
+  'BPC Parjatan Govt Hotel',
   'Beach Resort',
   'Tea Garden Resort',
   'Hilltop Eco-Resort',

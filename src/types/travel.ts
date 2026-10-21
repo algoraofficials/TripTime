@@ -86,7 +86,14 @@ export interface Listing {
   imageUrl: string;
   badge?: string;
   starRating?: 3 | 4 | 5;
-  propertyType?: 'Beach Resort' | 'Tea Garden Resort' | 'Hilltop Eco-Resort' | 'City Luxury Hotel' | 'Budget Residential Hotel' | 'Heritage Palace';
+  propertyType?:
+    | 'BPC Parjatan Govt Hotel'
+    | 'Beach Resort'
+    | 'Tea Garden Resort'
+    | 'Hilltop Eco-Resort'
+    | 'City Luxury Hotel'
+    | 'Budget Residential Hotel'
+    | 'Heritage Palace';
   localPaymentMethods?: string[];
   travelersChoiceAward?: 'Best of the Best 2026' | 'Travelers Choice 2026';
   provider: {

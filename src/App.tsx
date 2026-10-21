@@ -111,88 +111,101 @@ export default function App() {
 
   // Price Drop Alert Subscriptions State
   const [priceDropSubscriptions, setPriceDropSubscriptions] = useState<PriceDropSubscription[]>(
-    () => [
-      createDefaultPriceDropSubscription(INITIAL_LISTINGS[0], 10), // Sayeman Beach Resort Cox's Bazar
-      createDefaultPriceDropSubscription(INITIAL_LISTINGS[1], 12), // Grand Sultan Tea Resort Sylhet
-      createDefaultPriceDropSubscription(INITIAL_LISTINGS[7], 10), // Cox's Bazar Express Train 814
-    ]
+    () => {
+      const sayeman = INITIAL_LISTINGS.find((l) => l.id === 'hotel-coxs-sayeman') || INITIAL_LISTINGS[0];
+      const sultan = INITIAL_LISTINGS.find((l) => l.id === 'hotel-sylhet-sultan') || INITIAL_LISTINGS[1];
+      const coxsTrain = INITIAL_LISTINGS.find((l) => l.id === 'train-coxs-express') || INITIAL_LISTINGS[0];
+      return [
+        createDefaultPriceDropSubscription(sayeman, 10),
+        createDefaultPriceDropSubscription(sultan, 12),
+        createDefaultPriceDropSubscription(coxsTrain, 10),
+      ];
+    }
   );
   
   // User booking history for AI personalized itinerary suggestions & departure alerts
-  const [bookingHistory, setBookingHistory] = useState<Listing[]>([
-    INITIAL_LISTINGS[0], // Sayeman Beach Resort Cox's Bazar
-    INITIAL_LISTINGS[7], // Cox's Bazar Express (814): Dhaka Kamalapur -> Cox's Bazar
-    INITIAL_LISTINGS[5], // Biman Bangladesh BG-433: Dhaka (DAC) -> Cox's Bazar (CXB)
-  ]);
+  const [bookingHistory, setBookingHistory] = useState<Listing[]>(() => {
+    const sayeman = INITIAL_LISTINGS.find((l) => l.id === 'hotel-coxs-sayeman') || INITIAL_LISTINGS[0];
+    const coxsTrain = INITIAL_LISTINGS.find((l) => l.id === 'train-coxs-express') || INITIAL_LISTINGS[0];
+    const bimanFlight = INITIAL_LISTINGS.find((l) => l.id === 'flight-dac-cxb') || INITIAL_LISTINGS[0];
+    return [sayeman, coxsTrain, bimanFlight];
+  });
 
   // Digital Travel Wallet State: Multi-currency balance (stored in base USD), Monthly Budget, & Completed Transactions
   const [walletBalanceUsd, setWalletBalanceUsd] = useState<number>(1420);
   const [monthlyBudgetUsd, setMonthlyBudgetUsd] = useState<number>(600);
-  const [walletTransactions, setWalletTransactions] = useState<WalletTransaction[]>(() => [
-    {
-      id: 'tx-init-1',
-      referenceCode: 'TXN-90482',
-      title: INITIAL_LISTINGS[0].title,
-      category: INITIAL_LISTINGS[0].type,
-      type: 'debit',
-      amountUsd: INITIAL_LISTINGS[0].priceUsd,
-      paymentMethod: 'bKash Direct',
-      timestamp: 'Oct 19, 2026 · 14:20',
-      status: 'Completed',
-      bookingRef: `HTL-${INITIAL_LISTINGS[0].id.slice(0, 3).toUpperCase()}-84920`,
-    },
-    {
-      id: 'tx-init-2',
-      referenceCode: 'TXN-90315',
-      title: INITIAL_LISTINGS[7].title,
-      category: INITIAL_LISTINGS[7].type,
-      type: 'debit',
-      amountUsd: INITIAL_LISTINGS[7].priceUsd,
-      paymentMethod: 'Nagad Instant',
-      timestamp: 'Oct 18, 2026 · 09:45',
-      status: 'Completed',
-      bookingRef: `BR-${INITIAL_LISTINGS[7].id.slice(0, 3).toUpperCase()}-84783`,
-    },
-    {
-      id: 'tx-init-3',
-      referenceCode: 'TXN-90190',
-      title: 'Wallet Balance Top-Up (bKash Direct)',
-      category: 'topup',
-      type: 'credit',
-      amountUsd: 500,
-      paymentMethod: 'bKash Direct (+880 1711-482910)',
-      timestamp: 'Oct 16, 2026 · 18:10',
-      status: 'Settled',
-    },
-    {
-      id: 'tx-init-4',
-      referenceCode: 'TXN-89940',
-      title: INITIAL_LISTINGS[5].title,
-      category: INITIAL_LISTINGS[5].type,
-      type: 'debit',
-      amountUsd: INITIAL_LISTINGS[5].priceUsd,
-      paymentMethod: 'Visa / Mastercard',
-      timestamp: 'Oct 14, 2026 · 11:05',
-      status: 'Completed',
-      bookingRef: `BG-${INITIAL_LISTINGS[5].id.slice(0, 3).toUpperCase()}-84646`,
-    },
-    {
-      id: 'tx-init-5',
-      referenceCode: 'TXN-89712',
-      title: 'Initial Multi-Currency Travel Deposit',
-      category: 'topup',
-      type: 'credit',
-      amountUsd: 1200,
-      paymentMethod: 'Nagad Instant',
-      timestamp: 'Oct 10, 2026 · 10:00',
-      status: 'Settled',
-    },
-  ]);
+  const [walletTransactions, setWalletTransactions] = useState<WalletTransaction[]>(() => {
+    const sayeman = INITIAL_LISTINGS.find((l) => l.id === 'hotel-coxs-sayeman') || INITIAL_LISTINGS[0];
+    const coxsTrain = INITIAL_LISTINGS.find((l) => l.id === 'train-coxs-express') || INITIAL_LISTINGS[0];
+    const bimanFlight = INITIAL_LISTINGS.find((l) => l.id === 'flight-dac-cxb') || INITIAL_LISTINGS[0];
+    return [
+      {
+        id: 'tx-init-1',
+        referenceCode: 'TXN-90482',
+        title: sayeman.title,
+        category: sayeman.type,
+        type: 'debit',
+        amountUsd: sayeman.priceUsd,
+        paymentMethod: 'bKash Direct',
+        timestamp: 'Oct 19, 2026 · 14:20',
+        status: 'Completed',
+        bookingRef: `HTL-${sayeman.id.slice(0, 3).toUpperCase()}-84920`,
+      },
+      {
+        id: 'tx-init-2',
+        referenceCode: 'TXN-90315',
+        title: coxsTrain.title,
+        category: coxsTrain.type,
+        type: 'debit',
+        amountUsd: coxsTrain.priceUsd,
+        paymentMethod: 'Nagad Instant',
+        timestamp: 'Oct 18, 2026 · 09:45',
+        status: 'Completed',
+        bookingRef: `BR-${coxsTrain.id.slice(0, 3).toUpperCase()}-84783`,
+      },
+      {
+        id: 'tx-init-3',
+        referenceCode: 'TXN-90190',
+        title: 'Wallet Balance Top-Up (bKash Direct)',
+        category: 'topup',
+        type: 'credit',
+        amountUsd: 500,
+        paymentMethod: 'bKash Direct (+880 1711-482910)',
+        timestamp: 'Oct 16, 2026 · 18:10',
+        status: 'Settled',
+      },
+      {
+        id: 'tx-init-4',
+        referenceCode: 'TXN-89940',
+        title: bimanFlight.title,
+        category: bimanFlight.type,
+        type: 'debit',
+        amountUsd: bimanFlight.priceUsd,
+        paymentMethod: 'Visa / Mastercard',
+        timestamp: 'Oct 14, 2026 · 11:05',
+        status: 'Completed',
+        bookingRef: `BG-${bimanFlight.id.slice(0, 3).toUpperCase()}-84646`,
+      },
+      {
+        id: 'tx-init-5',
+        referenceCode: 'TXN-89712',
+        title: 'Initial Multi-Currency Travel Deposit',
+        category: 'topup',
+        type: 'credit',
+        amountUsd: 1200,
+        paymentMethod: 'Nagad Instant',
+        timestamp: 'Oct 10, 2026 · 10:00',
+        status: 'Settled',
+      },
+    ];
+  });
 
   // Departure Push Notifications state pulled from booking history
-  const [alerts, setAlerts] = useState<DepartureAlert[]>(() => 
-    generateDepartureAlerts([INITIAL_LISTINGS[7], INITIAL_LISTINGS[5]])
-  );
+  const [alerts, setAlerts] = useState<DepartureAlert[]>(() => {
+    const coxsTrain = INITIAL_LISTINGS.find((l) => l.id === 'train-coxs-express') || INITIAL_LISTINGS[0];
+    const bimanFlight = INITIAL_LISTINGS.find((l) => l.id === 'flight-dac-cxb') || INITIAL_LISTINGS[0];
+    return generateDepartureAlerts([coxsTrain, bimanFlight]);
+  });
   const [pushEnabled, setPushEnabled] = useState(true);
 
   // Modal states

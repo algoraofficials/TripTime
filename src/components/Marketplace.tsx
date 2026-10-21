@@ -614,12 +614,11 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
             <div className="flex items-center space-x-2">
               <Building2 className="w-5 h-5 text-emerald-400" />
               <h2 className="text-lg font-extrabold text-white tracking-tight">
-                Bangladesh Hotels &amp; Resorts Search Spotlight ({hotelListingsOnly.length} Stays)
+                Bangladesh Tourism Board &amp; Hotel Directory ({hotelListingsOnly.length} Stays)
               </h2>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Instant filter by Bangladesh resort category • Couple-friendly with NID • Pay with
-              bKash, Nagad, or 0% City Bank Amex EMI
+              Verified Bangladesh Parjatan Corporation (BPC / hotels.gov.bd) motels &amp; 3-to-5-star resorts across all 8 divisions • Pay with bKash, Nagad, or 0% EMI
             </p>
           </div>
 
@@ -657,7 +656,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
               }}
               className="px-3 py-1.5 rounded-xl text-xs font-bold border bg-amber-500/15 text-amber-300 border-amber-500/40 hover:bg-amber-500/25 transition-all cursor-pointer"
             >
-              Scraped Dhaka Budget Deals (3)
+              Scraped Dhaka &amp; BPC Deals ({scrapedHotelsData.length})
             </button>
 
             <button
@@ -671,7 +670,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
             >
               {showDhakaScraperPanel
                 ? 'Hide dhaka_hotel_prices.json Scraper'
-                : 'Live Dhaka Scraper (dhaka_hotel_prices.json)'}
+                : 'Live Dhaka & BPC Feed (dhaka_hotel_prices.json)'}
             </button>
           </div>
         </div>
@@ -683,18 +682,18 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="px-2 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold uppercase tracking-wider">
-                    Python BeautifulSoup + Requests Feed
+                    Python BeautifulSoup + BPC Feed
                   </span>
                   <span className="text-[11px] text-slate-400 font-mono">
                     fetch_dhaka_hotels.py → dhaka_hotel_prices.json
                   </span>
                 </div>
                 <h3 className="text-sm font-extrabold text-white mt-1">
-                  Real-Time Dhaka Budget Hotel Price Scraper (Fakirapool, Motijheel &amp; Old Dhaka)
+                  Real-Time Dhaka &amp; BPC Hotel Price Feed (Mohakhali, Motijheel, Banani, Uttara &amp; Old Dhaka)
                 </h3>
                 <p className="text-xs text-slate-400">
-                  Status: <strong className="text-emerald-400">{lastScrapedTimestamp}</strong> • 3
-                  Dhaka budget hotels synced directly into Marketplace listings
+                  Status: <strong className="text-emerald-400">{lastScrapedTimestamp}</strong> •{' '}
+                  {scrapedHotelsData.length} Dhaka &amp; BPC hotels synced directly into Marketplace listings
                 </p>
               </div>
 
