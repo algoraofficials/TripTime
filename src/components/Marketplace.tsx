@@ -59,6 +59,7 @@ import {
   FindThingsToDoByInterestSection,
   type InterestCategoryKey,
 } from './InterestActivitiesPage';
+import { ExpediaSearchWidget } from './ExpediaSearchWidget';
 
 interface MarketplaceProps {
   listings: Listing[];
@@ -254,8 +255,8 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
       {/* =====================================================================
           HERO BANGLADESH MULTI-LOCATION & HOTEL SEARCH SUITE
          ===================================================================== */}
-      <section className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-emerald-950/60 to-slate-900 border border-slate-800 p-6 sm:p-8 shadow-2xl">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-500/10 via-cyan-500/5 to-transparent pointer-events-none" />
+      <section className="relative z-30 rounded-3xl overflow-visible bg-gradient-to-br from-slate-900 via-emerald-950/60 to-slate-900 border border-slate-800 p-6 sm:p-8 shadow-2xl">
+        <div className="absolute inset-0 rounded-3xl overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-500/10 via-cyan-500/5 to-transparent pointer-events-none" />
 
         <div className="relative z-10 space-y-6">
           {/* Header Copy */}
@@ -315,190 +316,27 @@ export const Marketplace: React.FC<MarketplaceProps> = ({
             </div>
           </div>
 
-          {/* Category Mode Tabs */}
-          <div
-            className="flex flex-wrap gap-2"
-            role="tablist"
-            aria-label="Bangladesh Travel Categories"
-          >
-            <button
-              onClick={() => setCriteria((prev) => ({ ...prev, mode: 'all' }))}
-              role="tab"
-              aria-selected={criteria.mode === 'all'}
-              className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center space-x-2 transition-all cursor-pointer ${
-                criteria.mode === 'all'
-                  ? 'bg-white text-slate-950 shadow-lg shadow-white/10'
-                  : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-700/60'
-              }`}
-            >
-              <span>All Bangladesh ({listings.length})</span>
-            </button>
-
-            {(
-              ['hotel', 'train', 'flight', 'ship', 'experience', 'restaurant'] as TransitMode[]
-            ).map((mode) => {
-              const modeCount = listings.filter((l) => l.type === mode).length;
-              return (
-                <button
-                  key={mode}
-                  onClick={() => setCriteria((prev) => ({ ...prev, mode }))}
-                  role="tab"
-                  aria-selected={criteria.mode === mode}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center space-x-2 transition-all cursor-pointer ${
-                    criteria.mode === mode
-                      ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30'
-                      : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-700/60'
-                  }`}
-                >
-                  {getModeIcon(mode)}
-                  <span>
-                    {getModeLabel(mode)} ({modeCount})
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Primary Search Engine Grid (6 Controls) */}
-          <div className="bg-slate-950/95 p-4 rounded-2xl border border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 shadow-xl">
-            {/* 1. Keyword / Hotel / Route Search */}
-            <div className="lg:col-span-2">
-              <label
-                htmlFor="bd-search-input"
-                className="block text-[11px] font-semibold text-slate-400 mb-1"
-              >
-                Search Hotels, Districts, Trains or Dishes
-              </label>
-              <div className="flex items-center bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs focus-within:border-emerald-500">
-                <Search className="w-4 h-4 text-emerald-400 mr-2 flex-shrink-0" />
-                <input
-                  id="bd-search-input"
-                  type="text"
-                  placeholder={t.searchPlaceholder}
-                  value={criteria.searchQuery}
-                  onChange={(e) =>
-                    setCriteria((prev) => ({ ...prev, searchQuery: e.target.value }))
-                  }
-                  className="bg-transparent text-white placeholder-slate-500 w-full focus:outline-none"
-                />
-              </div>
-            </div>
-
-            {/* 2. Origin Hub (From) */}
-            <div>
-              <label
-                htmlFor="bd-origin-select"
-                className="block text-[11px] font-semibold text-slate-400 mb-1"
-              >
-                Departing From (BD Hub)
-              </label>
-              <div className="flex items-center bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs">
-                <MapPin className="w-4 h-4 text-cyan-400 mr-1.5 flex-shrink-0" />
-                <select
-                  id="bd-origin-select"
-                  value={criteria.originHub}
-                  onChange={(e) =>
-                    setCriteria((prev) => ({ ...prev, originHub: e.target.value }))
-                  }
-                  className="bg-transparent text-white w-full focus:outline-none cursor-pointer truncate"
-                >
-                  {BANGLADESH_ORIGIN_HUBS.map((hub) => (
-                    <option key={hub} value={hub} className="bg-slate-900">
-                      {hub === 'all' ? 'Any Bangladesh Origin' : hub}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* 3. Destination District (To) */}
-            <div>
-              <label
-                htmlFor="bd-dest-select"
-                className="block text-[11px] font-semibold text-slate-400 mb-1"
-              >
-                {t.destination}
-              </label>
-              <div className="flex items-center bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs">
-                <Compass className="w-4 h-4 text-emerald-400 mr-1.5 flex-shrink-0" />
-                <select
-                  id="bd-dest-select"
-                  value={criteria.destinationDistrict}
-                  onChange={(e) =>
-                    setCriteria((prev) => ({ ...prev, destinationDistrict: e.target.value }))
-                  }
-                  className="bg-transparent text-white w-full focus:outline-none cursor-pointer truncate"
-                >
-                  {BANGLADESH_DESTINATIONS.map((dest) => (
-                    <option key={dest} value={dest} className="bg-slate-900">
-                      {dest === 'all' ? 'All BD Destinations' : dest}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* 4. Check-In & Check-Out Dates */}
-            <div>
-              <label
-                htmlFor="bd-checkin-date"
-                className="block text-[11px] font-semibold text-slate-400 mb-1"
-              >
-                Check-In / Travel Date
-              </label>
-              <div className="flex items-center bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs">
-                <Calendar className="w-4 h-4 text-amber-400 mr-1.5 flex-shrink-0" />
-                <input
-                  id="bd-checkin-date"
-                  type="date"
-                  value={checkInDate}
-                  onChange={(e) => setCheckInDate(e.target.value)}
-                  aria-label="Check-in or departure date"
-                  className="bg-transparent text-white w-full focus:outline-none"
-                />
-              </div>
-            </div>
-
-            {/* 5. Guests & Rooms */}
-            <div>
-              <label
-                htmlFor="bd-guests-select"
-                className="block text-[11px] font-semibold text-slate-400 mb-1"
-              >
-                {t.guests}
-              </label>
-              <div className="flex items-center bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-2 text-xs">
-                <Users className="w-4 h-4 text-indigo-400 mr-1.5 flex-shrink-0" />
-                <select
-                  id="bd-guests-select"
-                  value={criteria.guestsCount}
-                  onChange={(e) =>
-                    setCriteria((prev) => ({
-                      ...prev,
-                      guestsCount: parseInt(e.target.value, 10),
-                    }))
-                  }
-                  className="bg-transparent text-white w-full focus:outline-none cursor-pointer truncate"
-                >
-                  <option value={1} className="bg-slate-900">
-                    1 Room • 1 Solo Traveler
-                  </option>
-                  <option value={2} className="bg-slate-900">
-                    1 Room • 2 Adults (Couple / NID)
-                  </option>
-                  <option value={3} className="bg-slate-900">
-                    1 Room • 3 Guests (Small Group)
-                  </option>
-                  <option value={4} className="bg-slate-900">
-                    2 Rooms • 4 Family Guests
-                  </option>
-                  <option value={6} className="bg-slate-900">
-                    3 Rooms • 6+ Group Tour
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
+          {/* Black-Themed Expedia 6-Tab Search Suite (Stays, Flights, Cars, Packages, Things to do, Cruises) */}
+          <ExpediaSearchWidget
+            criteria={criteria}
+            onUpdateCriteria={setCriteria}
+            checkInDate={checkInDate}
+            onChangeCheckInDate={setCheckInDate}
+            listings={listings}
+            currentCurrency={currentCurrency}
+            onSelectInterestCategory={onSelectInterestCategory}
+            onBookBundlePackage={(stayListing, transitListing, discountedTotalUsd) => {
+              const bundleListing: Listing = {
+                ...stayListing,
+                id: `bundle-${stayListing.id}-${transitListing.id}`,
+                title: `${stayListing.title} + ${transitListing.title}`,
+                tagline: `Expedia Bundle & Save Package • Stay + Transit included`,
+                priceUsd: discountedTotalUsd,
+                badge: 'Bundle & Save Package',
+              };
+              onBookDirect(bundleListing);
+            }}
+          />
 
 
 
